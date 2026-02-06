@@ -1,0 +1,2 @@
+source ~/.zprofile
+source ~/.aliases
