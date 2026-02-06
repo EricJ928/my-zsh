@@ -1,0 +1,18 @@
+# Shortcuts
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias doc="cd ~/Documents"
+alias od="cd ~/OneDrive\ -\ SAP\ SE"
+alias pj="cd ~/OneDrive\ -\ SAP\ SE/ProjectRepos"
+alias ref="cd ~/OneDrive\ -\ SAP\ SE/ProjectDocs/Refs/reference-manager"
+alias sf="cd ~/Documents/ProjectRepos/SF"
+
+# python3 and pip3
+alias python="python3"
+alias pip="pip3"
+alias python3.9="/usr/bin/python3"
+
+# alias la="ls -a"
+# alias ll="ls -la"
+alias la='ls -laG'
+alias ll='ls -lG'           # list long with color (BSD ls)
