@@ -2,6 +2,8 @@
 
 ## Steps
 
+### Shell setup
+
 1. Change shell to zsh
 ```zsh
 chsh -s /bin/zsh
@@ -51,3 +53,18 @@ Check if it works:
 ```zsh
 npx @modelcontextprotocol/inspector
 ```
+
+### OneDrive sync on git repos
+
+For git repos stored on OneDrive, when they sync on new laptop from cloud, all files will be shown as `modified` in git status. This is because OneDrive sync set the executable bit (`+x`) on all your files when it reconstituted them on the new laptop. Git tracks that bit, so it reports every file as "modified."
+
+Do this in every affected repo:
+```zsh
+git config core.fileMode false
+git status
+```
+Or set it globally:
+```zsh
+git config --global core.fileMode false
+```
+This tells git to stop tracking the executable bit (`+x`).
