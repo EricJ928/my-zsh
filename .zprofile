@@ -89,7 +89,7 @@ setopt PUSHD_IGNORE_DUPS
 # Lazy loading conda
 conda() {
   unset -f conda
-  source /Users/I589913/miniconda3/etc/profile.d/conda.sh
+  source /opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh
   conda "$@"
 }
 
@@ -125,3 +125,14 @@ npx()  { nvm; npx "$@" }
 # export NVM_DIR="$HOME/.nvm"
 #   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 #   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# Also expose the current node's bin dir on PATH so non-interactive child
+# processes (e.g. MCP servers spawned by Claude Code) can find node/npx as
+# real binaries, not just as shell functions.
+if [ -d "$NVM_DIR/versions/node" ]; then
+  _NVM_CURRENT_BIN=$(ls -1 "$NVM_DIR/versions/node" 2>/dev/null | sort -V | tail -1)
+  if [ -n "$_NVM_CURRENT_BIN" ] && [ -d "$NVM_DIR/versions/node/$_NVM_CURRENT_BIN/bin" ]; then
+    export PATH="$NVM_DIR/versions/node/$_NVM_CURRENT_BIN/bin:$PATH"
+  fi
+  unset _NVM_CURRENT_BIN
+fi
