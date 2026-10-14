@@ -1,8 +1,6 @@
 # my-zsh
 
-## Steps
-
-### Shell setup
+## 1. Shell setup
 
 1. Change shell to zsh
 ```zsh
@@ -17,7 +15,7 @@ brew install zsh-autosuggestions zsh-syntax-highlighting
 4. For VS code shell integration:
 5. Open Settings `cmd` + `,`, search for "Terminal › Integrated › Default Profile: Osx". Change it to "zsh"
 
-### Install packages
+## 2. Install packages
 
 1. uv
 ```zsh
@@ -54,7 +52,56 @@ Check if it works:
 npx @modelcontextprotocol/inspector
 ```
 
-### OneDrive sync on git repos
+## 3. Set uv to work with OneDrive
+
+By default, uv installs venv under the repo dir. This create a massive syncing overhead if the repo is under OneDrive, as .venv normally contains large number of small files (>30,000 often).
+
+In the `.zshrc` in this repo, we set the `UV_PROJECT_ENVIRONMENT` to `$HOME/.virtualenvs/$(basename "$PWD")_${PATH_HASH}_venv` to keep venv out of the repo.
+
+**Follow these steps:**
+
+1. Use the setting in .zshrc. In this case, all uv installed venv will be under a central location `.virtualenvs/` and with the name of `RepoName_RepoPathHash_venv`. The path hash is to avoid name clash if 2 repos have the same name.
+2. To activate the env in terminal, run:
+```zsh
+echo $UV_PROJECT_ENVIRONMENT
+source $UV_PROJECT_ENVIRONMENT/bin/activate
+```
+Then run:
+```zsh
+python --version
+which python
+python main.py
+```
+To leave the environment:
+```zsh
+deactivate
+```
+3. Directly run python via uv w/o activating the env in terminal:
+```zsh
+uv run python --version
+uv run python main.py
+uv pip install package
+```
+
+>[!TIP]
+>Note: `uv run` can synchronize the project environment with your project configuration before running. If you only want to run Python without automatic synchronization, use `uv run --no-sync python main.py`.
+
+4. To make VS Code Python Interpreter auto detects central uv env: `cmd`+`shift`+`P`, then type and select `Preferences: Open User Settings (JSON)`. Add or update these settings:
+```json
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "One Dark Pro",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "python.venvPath": "${env:HOME}/.virtualenvs",
+    "python.condaPath": "/opt/homebrew/Caskroom/miniforge/base/bin/conda",
+    "python.terminal.activateEnvironment": true
+}
+```
+
+>[!WARNING]
+>The setting above also includes icon & color theme, default shell for integrated terminal, and conda env path. Update them accordingly.
+
+## 4. OneDrive sync on git repos
 
 For git repos stored on OneDrive, when they sync on new laptop from cloud, all files will be shown as `modified` in git status. This is because OneDrive sync set the executable bit (`+x`) on all your files when it reconstituted them on the new laptop. Git tracks that bit, so it reports every file as "modified."
 
