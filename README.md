@@ -58,6 +58,10 @@ By default, uv installs venv under the repo dir. This create a massive syncing o
 
 In the `.zshrc` in this repo, we set the `UV_PROJECT_ENVIRONMENT` to `$HOME/.virtualenvs/$(basename "$PWD")_${PATH_HASH}_venv` to keep venv out of the repo.
 
+```zsh
+mkdir ~/.virtualenvs
+```
+
 **Follow these steps:**
 
 1. Use the setting in .zshrc. In this case, all uv installed venv will be under a central location `.virtualenvs/` and with the name of `RepoName_RepoPathHash_venv`. The path hash is to avoid name clash if 2 repos have the same name.
