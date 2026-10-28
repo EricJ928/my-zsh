@@ -119,3 +119,39 @@ Or set it globally:
 git config --global core.fileMode false
 ```
 This tells git to stop tracking the executable bit (`+x`).
+
+## 5. Set up Github Personal Access Token (PAT)
+
+1. Generate a PAT on Github UI: Avatar -> Settings -> Developer settings -> Personal access tokens -> Token (classic) -> generate a new token
+2. Configure Git to use macOS Keychain.
+```zsh
+git config --global credential.helper osxkeychain
+```
+3. Set your PAT
+```zsh
+git credential-osxkeychain store
+```
+Your terminal will wait for input. Paste the following (ONE LINE AT A TIME!), replacing the placeholders with your actual details:
+```zsh
+protocol=https
+host=github.tools.sap
+username=YOUR_GITHUB_USERNAME
+password=YOUR_PERSONAL_ACCESS_TOKEN
+```
+Press Enter on the blank line after password=... to submit the credentials. The token itself won't be masked while you type or paste it into this input, so avoid doing this where others can see your screen.
+
+## Local LaTeX with VS Code
+
+1. Install `mactex-no-gui` (~7GB). This version includes full LaTeX packages. If storage is a concern, install `basictex` instead. But more likely you will need to install individual packages later on.
+```zsh
+brew install --cask mactex-no-gui
+```
+2. Verify
+```zsh
+pdflatex --version
+latexmk --version
+bibtex --version
+```
+3. In VS Code, install `LaTeX Workshop` extension.
+
+
